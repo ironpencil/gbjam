@@ -3,20 +3,33 @@ using System.Collections;
 
 public class CameraManager : MonoBehaviour {
 
-    public Transform cameraTarget;
+    private Vector2 cameraTarget;
+
+    public Vector2 CameraTarget
+    {
+        get { return cameraTarget; }
+        set
+        {
+            cameraTarget = value;
+            cameraTarget.x += horizontalOffset;
+            cameraTarget.y += verticalOffset;
+        }
+    }
 
     public Camera camera;
 
     public float transitionTime = 1.0f;
-    
-	// Use this for initialization
-	void Start () {
+
+    public int horizontalOffset = 8;
+    public int verticalOffset = 0;
+    	
+	void Awake () {
         if (camera == null)
         {
             camera = Camera.main;
         }
 
-        cameraTarget = camera.transform;
+        CameraTarget = camera.transform.position;
 	
 	}
 	
@@ -29,6 +42,14 @@ public class CameraManager : MonoBehaviour {
     public void TransitionToTarget()
     {
         StartCoroutine(DoTransitionToTarget());
+    }
+
+    public void SnapToTarget()
+    {
+        Vector3 finalCamPosition = CameraTarget;
+        finalCamPosition.z = camera.transform.position.z;
+
+        camera.transform.position = finalCamPosition; 
     }
     
     private IEnumerator DoTransitionToTarget()
@@ -49,14 +70,14 @@ public class CameraManager : MonoBehaviour {
 
             float percentageComplete = elapsedTime / transitionTime;
 
-            Vector3 newCamPosition = Vector3.Lerp(previousCameraPosition, cameraTarget.position, percentageComplete);
+            Vector3 newCamPosition = Vector3.Lerp(previousCameraPosition, CameraTarget, percentageComplete);
 
             newCamPosition.z = camera.transform.position.z;
 
             camera.transform.position = newCamPosition;
         }
 
-        Vector3 finalCamPosition = cameraTarget.position;
+        Vector3 finalCamPosition = CameraTarget;
         finalCamPosition.z = camera.transform.position.z;
 
         camera.transform.position = finalCamPosition;        

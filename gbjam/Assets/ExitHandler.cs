@@ -15,6 +15,9 @@ public class ExitHandler : MonoBehaviour {
     public float roomTransitionTime = 1.0f;
 
     public int playerExitPlacementOffset = 2;
+    public int playerExitSouthOffset = 8;
+
+    
 
     public bool doneMoving = false;
 
@@ -44,7 +47,7 @@ public class ExitHandler : MonoBehaviour {
 
         cameraManager.transitionTime = roomTransitionTime;
 
-        cameraManager.cameraTarget = newRoom.transform;
+        cameraManager.CameraTarget = newRoom.transform.position;
 
         Vector2 newPlayerPosition = player.transform.position;
 
@@ -61,7 +64,7 @@ public class ExitHandler : MonoBehaviour {
                 newPlayerPosition.y = newRoom.southExit.transform.position.y + playerExitPlacementOffset;
                 break;
             case Direction.South:
-                newPlayerPosition.y = newRoom.northExit.transform.position.y - playerExitPlacementOffset;
+                newPlayerPosition.y = newRoom.northExit.transform.position.y - playerExitPlacementOffset - playerExitSouthOffset;
                 break;
             default:
                 break;

@@ -11,15 +11,20 @@ public class DungeonManager : MonoBehaviour {
 
     public List<DungeonRoom> allRooms = new List<DungeonRoom>();
 
+    public CameraManager cameraManager;
     public Transform player;
 
 	// Use this for initialization
 	void Start () {
-	
+        SetUpDungeon();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SetUpDungeon();
+        }
 	
 	}
 
@@ -33,6 +38,10 @@ public class DungeonManager : MonoBehaviour {
         currentRoom = GetRoom(Vector2.zero);
 
         player.position = currentRoom.transform.position;
+
+        cameraManager.CameraTarget = currentRoom.transform.position;
+        cameraManager.SnapToTarget();
+        
     }
 
     private DungeonRoom GetRoom(Vector2 roomLocation)
