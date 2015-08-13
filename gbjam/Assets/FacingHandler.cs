@@ -11,6 +11,8 @@ public class FacingHandler : MonoBehaviour {
     public const string ANIM_PARAM_WALKING = "walking";
 
     public Vector2 facing = Vector2.zero;
+
+    public bool simpleFacing = true;
 	// Use this for initialization
 	void Start () {
 	
@@ -23,40 +25,55 @@ public class FacingHandler : MonoBehaviour {
         float moveY = movementController.movementDirection.y;
         bool walking = false;
 
-        if (Mathf.Abs(moveX) > 0 && Mathf.Abs(moveY) > 0)
+        if (simpleFacing)
         {
-            //they're pressing both directions
-            //so just use whatever our previous facing was
+            if (Mathf.Abs(moveX) > 0 || Mathf.Abs(moveY) > 0)
+            {
+                walking = true;
 
-            walking = true;
-
-            //TODO: make sure they haven't changed facing direction in one frame somehow
-            //
+                facing.x = moveX;
+                facing.y = moveY;
+            }
         }
         else
         {
-            // arbitrarily favor horizontal facing
-            if (Mathf.Abs(moveX) > 0)
+            if (Mathf.Abs(moveX) > 0 && Mathf.Abs(moveY) > 0)
             {
-                moveY = 0.0f;
-                facing.x = moveX;
-                facing.y = 0.0f;
+                //they're moving in both directions
+                //so just use whatever our previous facing was
 
                 walking = true;
+
+
+                //TODO: make sure they haven't changed facing direction in one frame somehow
             }
-
-            if (Mathf.Abs(moveY) > 0)
+            else
             {
-                facing.x = 0.0f;
-                facing.y = moveY;
+                // arbitrarily favor horizontal facing
+                if (Mathf.Abs(moveX) > 0)
+                {
+                    moveY = 0.0f;
+                    facing.x = moveX;
+                    facing.y = 0.0f;
 
-                walking = true;
+                    walking = true;
+                }
+
+                if (Mathf.Abs(moveY) > 0)
+                {
+                    facing.x = 0.0f;
+                    facing.y = moveY;
+
+                    walking = true;
+                }
             }
         }
 
         animator.SetFloat(ANIM_PARAM_FACING_X, facing.x);
         animator.SetFloat(ANIM_PARAM_FACING_Y, facing.y);
         animator.SetBool(ANIM_PARAM_WALKING, walking);
+
+        
         
 
         

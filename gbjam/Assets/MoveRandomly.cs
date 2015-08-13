@@ -12,6 +12,15 @@ public class MoveRandomly : BaseMovement {
     private float moveStartTime = 0.0f; 
     private float moveEndTime = 0.0f;
 
+    public float moveXChance = 0.5f;
+    public float moveYChance = 0.5f;
+
+    public float moveXMin = 0.5f;
+    public float moveYMin = 0.5f;
+
+    public bool debugMovement = false;
+    private bool doDebugVelocity = false;
+
     private bool isMoving = false;
 
     private Rigidbody2D rb;
@@ -44,8 +53,16 @@ public class MoveRandomly : BaseMovement {
     void FixedUpdate()
     {
         Vector2 velocity = movementDirection * speed;
-        rb.velocity = velocity;
+        if (rb.velocity != velocity)
+        {
+            rb.velocity = velocity;
+        }
 
+        if (doDebugVelocity)
+        {
+            Debug.Log("Velocity = " + velocity);
+            doDebugVelocity = false;
+        }
         //rb.AddRelativeForce(velocity);
 
         //if (rb.velocity.sqrMagnitude > maxSpeed * maxSpeed)
@@ -57,11 +74,59 @@ public class MoveRandomly : BaseMovement {
 
     private void StartMoving()
     {
-        movementDirection = new Vector2();
+        movementDirection = new Vector2(0.0f, 0.0f);
+
+        if (debugMovement)
+        {
+            movementDirection.x = 1.0f;
+            if (Random.Range(0, 2) > 0)
+            {
+                movementDirection.x = -1.0f;
+            }
+        }
+        else
+        {
+
+            bool moveX = false;
+            bool moveY = false;
+
+            moveX = Random.Range(0.0f, 1.0f) < moveXChance;
+            moveY = Random.Range(0.0f, 1.0f) < moveYChance;
+
+            if (moveX)
+            {
+                float movementRange = Random.Range(moveXMin, 1.0f);
+
+                //flip sign 50% of the time
+                if (Random.Range(0, 2) > 0)
+                {
+                    movementRange *= -1;
+                }
+                movementDirection.x = movementRange;
+            }
+
+            if (moveY)
+            {
+                float movementRange = Random.Range(moveYMin, 1.0f);
+
+                //flip sign 50% of the time
+                if (Random.Range(0, 2) > 0)
+                {
+                    movementRange *= -1;
+                }
+                movementDirection.y = movementRange;
+            }
+        }
+
+        if (debugMovement)
+        {
+            Debug.Log("Started moving: " + movementDirection.ToString());
+            doDebugVelocity = true;
+        }
         //movementDirection.x = Random.Range(-1, 2);
         //movementDirection.y = Random.Range(-1, 2);
-        movementDirection.x = Mathf.Clamp(Random.Range(-2.0f, 2.0f), -1.0f, 1.0f);
-        movementDirection.y = Mathf.Clamp(Random.Range(-2.0f, 2.0f), -1.0f, 1.0f);
+        //movementDirection.x = Mathf.Clamp(Random.Range(-2.0f, 2.0f), -1.0f, 1.0f);
+        //movementDirection.y = Mathf.Clamp(Random.Range(-2.0f, 2.0f), -1.0f, 1.0f);
         isMoving = true;
         moveEndTime = Time.time + Random.Range(minMoveTime, maxMoveTime);
     }
