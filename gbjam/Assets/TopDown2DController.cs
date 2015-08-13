@@ -1,30 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TopDown2DController : MonoBehaviour {
-
-    public float speed = 16;
+public class TopDown2DController : BaseMovement {
 
     Rigidbody2D rb;
-
-    Vector2 movement = Vector2.zero;
+    
 	// Use this for initialization
 	void Start () {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();               
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        float horizontal = Input.GetAxisRaw("Horizontal");
+        //float horizontal = Input.GetAxisRaw("Horizontal");
 
-        float horizontalMovement = horizontal;
+        //float horizontalMovement = horizontal;
 
-        float vertical = Input.GetAxisRaw("Vertical");
+        //float vertical = Input.GetAxisRaw("Vertical");
 
-        float verticalMovement = vertical;
+        //float verticalMovement = vertical;
 
-        movement = new Vector2(horizontalMovement, verticalMovement);
+        //movementDirection = new Vector2(horizontalMovement, verticalMovement);
+
+
+
+
+
         //Vector2 position = transform.position;
 
         //position.x += horizontalMovement;
@@ -35,7 +37,7 @@ public class TopDown2DController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Vector2 velocity = movement * speed;        
+        Vector2 velocity = movementDirection * speed;        
         rb.velocity = velocity;
 
         //rb.AddRelativeForce(velocity);

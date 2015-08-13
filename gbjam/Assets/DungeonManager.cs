@@ -12,11 +12,17 @@ public class DungeonManager : MonoBehaviour {
     public List<DungeonRoom> allRooms = new List<DungeonRoom>();
 
     public CameraManager cameraManager;
+    public GameObject playerPrefab;
     public Transform player;
+
+    public Transform playerParent;
+
+    public int currentFloor = 1;
 
 	// Use this for initialization
 	void Start () {
-        SetUpDungeon();
+        //SetUpDungeon();
+        ResetDungeon();
 	}
 	
 	// Update is called once per frame
@@ -32,16 +38,36 @@ public class DungeonManager : MonoBehaviour {
     public void SetUpDungeon()
     {
         allRooms.Clear();
-        
+                
         allRooms = dungeonGenerator.BuildDungeon();
 
-        currentRoom = GetRoom(Vector2.zero);
+        MoveToRoom(GetRoom(Vector2.zero), false); //don't spawn monsters in first room
 
+        player.gameObject.SetActive(true);
         player.position = currentRoom.transform.position;
 
         cameraManager.CameraTarget = currentRoom.transform.position;
         cameraManager.SnapToTarget();
         
+    }
+
+    public void MoveToRoom(DungeonRoom room, bool spawnMonsters)
+    {
+        currentRoom = room;
+
+        SpawnerManager spawnManager = room.GetComponent<SpawnerManager>();
+        
+        if (spawnManager != null)
+        {
+            if (spawnMonsters)
+            {
+                spawnManager.SelectAndSpawnMonsters();
+            }
+            else
+            {
+                spawnManager.monstersSpawned = true; //flag so this room doesn't spawn monsters later
+            }
+        }
     }
 
     private DungeonRoom GetRoom(Vector2 roomLocation)
@@ -76,5 +102,40 @@ public class DungeonManager : MonoBehaviour {
         DungeonRoom toRoom = GetRoom(toRoomLocation);
 
         return toRoom;
+    }
+
+    public void MoveToNextFloor()
+    {
+        //TODO: do a screen transition
+
+        //disable player object
+        player.gameObject.SetActive(false);
+
+        currentFloor++;
+
+        SetUpDungeon();
+
+        //TODO: do screen transition in
+    }
+
+    public void ResetDungeon()
+    {
+        currentFloor = 1;
+
+        if (player != null && player.gameObject != null)
+        {
+            DestroyImmediate(player.gameObject);
+        }
+
+        GameObject playerObject = (GameObject)GameObject.Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+
+        playerObject.transform.parent = playerParent;
+
+        player = playerObject.transform;
+
+        dungeonGenerator.player = player.gameObject;
+
+        SetUpDungeon();
+
     }
 }

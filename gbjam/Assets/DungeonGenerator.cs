@@ -60,6 +60,9 @@ public class DungeonGenerator : MonoBehaviour {
 
             currentDungeonRooms.Add(roomObject);
 
+            roomObject.stairTrigger.gameObject.SetActive(false);
+            roomObject.stairTrigger.dungeonManager = dungeonManager;
+
             //build the exits
             ExitHandler exitHandler = (ExitHandler)GameObject.Instantiate(exitHandlerPrefab);
 
@@ -106,14 +109,18 @@ public class DungeonGenerator : MonoBehaviour {
                 {
                     exitTrigger.gameObject.SetActive(true);
                 }
-            }
+            }            
         }
+
+        DungeonRoom finalRoom = currentDungeonRooms.Last();
+
+        finalRoom.stairTrigger.gameObject.SetActive(true);
 
         return new List<DungeonRoom>(currentDungeonRooms);
     }
 
     [ContextMenu("Display Dungeon")]
-    public void DIsplayDungen()
+    public void DisplayDungeon()
     {
         StartCoroutine(DoDisplayDungeon());
     }

@@ -13,6 +13,10 @@ public class DungeonRoom : MonoBehaviour {
 
     public Vector2 roomCoordinates;
 
+    public SpawnerManager spawnerManager;
+
+    public StairTrigger stairTrigger;
+
 	// Use this for initialization
 	void Start () {
 	

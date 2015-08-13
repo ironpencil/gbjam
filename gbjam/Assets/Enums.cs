@@ -5,3 +5,10 @@
     North,
     South
 }
+
+public enum EffectSource
+{
+    Universal,
+    Player,
+    Enemy
+}

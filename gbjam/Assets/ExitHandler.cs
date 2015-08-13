@@ -73,7 +73,9 @@ public class ExitHandler : MonoBehaviour {
         MovePlayerToNewRoom(newPlayerPosition);
         cameraManager.TransitionToTarget();
 
-        dungeonManager.currentRoom = newRoom;
+        dungeonManager.MoveToRoom(newRoom, true);
+
+        //dungeonManager.currentRoom = newRoom;        
     }
     
     public void MovePlayerToNewRoom(Vector2 targetPosition)
