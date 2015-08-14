@@ -15,7 +15,8 @@ public class DungeonRoom : MonoBehaviour {
 
     public SpawnerManager spawnerManager;
 
-    public StairTrigger stairTrigger;
+    public StairTrigger stairsDown;
+    public StairTrigger stairsUp;
 
 	// Use this for initialization
 	void Start () {

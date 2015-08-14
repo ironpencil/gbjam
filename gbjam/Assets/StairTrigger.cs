@@ -5,6 +5,14 @@ public class StairTrigger : MonoBehaviour
 {
     public DungeonManager dungeonManager;
 
+    public enum StairDirection
+    {        
+        Down,
+        Up
+    }
+
+    public StairDirection stairDirection;
+
     // Use this for initialization
     void Start()
     {
@@ -24,7 +32,10 @@ public class StairTrigger : MonoBehaviour
         {
             Debug.Log("Triggered by player!");
             //do the transition
-            dungeonManager.MoveToNextFloor();
+            if (stairDirection == StairDirection.Down)
+            {
+                dungeonManager.MoveToNextFloor();
+            }
         }
     }
 }

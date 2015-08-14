@@ -17,6 +17,8 @@ public class DungeonManager : MonoBehaviour {
 
     public Transform playerParent;
 
+    public ScreenTransition screenTransition;
+
     public int currentFloor = 1;
 
 	// Use this for initialization
@@ -44,7 +46,7 @@ public class DungeonManager : MonoBehaviour {
         MoveToRoom(GetRoom(Vector2.zero), false); //don't spawn monsters in first room
 
         player.gameObject.SetActive(true);
-        player.position = currentRoom.transform.position;
+        player.position = new Vector3(currentRoom.transform.position.x, currentRoom.transform.position.y - 4.0f, currentRoom.transform.position.z);
 
         cameraManager.CameraTarget = currentRoom.transform.position;
         cameraManager.SnapToTarget();
@@ -106,14 +108,28 @@ public class DungeonManager : MonoBehaviour {
 
     public void MoveToNextFloor()
     {
-        //TODO: do a screen transition
+        StartCoroutine(DoMoveToNextFloor());
+    }
 
+    private IEnumerator DoMoveToNextFloor()
+    {
         //disable player object
+        Globals.Instance.Pause(true);
+        
+        //TODO: do a screen transition
+        yield return StartCoroutine(screenTransition.TransitionCoverScreen(1.0f));
+
         player.gameObject.SetActive(false);
 
         currentFloor++;
 
         SetUpDungeon();
+
+        yield return null;
+
+        yield return StartCoroutine(screenTransition.TransitionUncoverScreen(1.0f));
+        
+        Globals.Instance.Pause(false);
 
         //TODO: do screen transition in
     }

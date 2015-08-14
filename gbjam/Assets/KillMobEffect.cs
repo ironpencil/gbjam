@@ -5,6 +5,8 @@ public class KillMobEffect : GameEffect {
 
     public Animator deathAnimator;
     public BaseMovement movementToDisable;
+    public Collider2D colliderToDisable;
+    public Rigidbody2D rigidbodyToReset;
 
     public bool doDestroy = false;
     public float destroyDelay = 2.0f;
@@ -20,7 +22,18 @@ public class KillMobEffect : GameEffect {
 
         if (movementToDisable != null)
         {
+            movementToDisable.movementDirection = Vector2.zero;
             movementToDisable.enabled = false;
+        }
+
+        if (colliderToDisable != null)
+        {
+            colliderToDisable.enabled = false;
+        }
+
+        if (rigidbodyToReset != null)
+        {
+            rigidbodyToReset.velocity = Vector2.zero;            
         }
 
         if (doDestroy)
