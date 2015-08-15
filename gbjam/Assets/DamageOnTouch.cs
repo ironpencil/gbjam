@@ -49,7 +49,8 @@ public class DamageOnTouch : MonoBehaviour
 
             if (touched != null)
             {
-                bool damageDone = touched.ApplyDamage(damage, damageType, coll);
+                Collider2D thisCollider = gameObject.GetComponent<Collider2D>();
+                bool damageDone = touched.ApplyDamage(damage, damageType, coll, thisCollider);
 
                 if (bounceWhenDealingDamage)
                 {

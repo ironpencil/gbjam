@@ -13,6 +13,7 @@ public class Globals : Singleton<Globals>
     public bool playIntro = true;
     public IntroPanel firstPanel;
 
+    public WeaponChargeBar weaponChargeBar;
 
     public override void Start()
     {

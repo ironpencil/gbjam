@@ -7,7 +7,7 @@ public class TemporaryInvulnEffect : GameEffect {
 
     public TakesDamage takesDamage;
 
-    public override void ActivateEffect(GameObject activator, float value, Collision2D coll)
+    public override void ActivateEffect(GameObject activator, float value, Collision2D coll, Collider2D other)
     {
         if (takesDamage != null)
         {

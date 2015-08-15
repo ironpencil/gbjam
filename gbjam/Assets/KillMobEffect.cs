@@ -13,7 +13,7 @@ public class KillMobEffect : GameEffect {
 
     public const string ANIM_PARAM_DEAD = "dead";
 
-    public override void ActivateEffect(GameObject activator, float value, Collision2D coll)
+    public override void ActivateEffect(GameObject activator, float value, Collision2D coll, Collider2D other)
     {
         if (deathAnimator != null)
         {

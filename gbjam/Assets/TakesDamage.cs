@@ -102,7 +102,7 @@ public class TakesDamage : MonoBehaviour
 
     }
 
-    public virtual bool ApplyDamage(float damage, EffectSource damageType, Collision2D coll)
+    public virtual bool ApplyDamage(float damage, EffectSource damageType, Collision2D coll, Collider2D other)
     {
         //if we're already marked for death, don't apply more damage
         if (markedForDeath || invulnerable) { return false; }
@@ -122,7 +122,7 @@ public class TakesDamage : MonoBehaviour
             {
                 foreach (GameEffect effect in damagedEffects)
                 {
-                    effect.ActivateEffect(gameObject, damage, coll);
+                    effect.ActivateEffect(gameObject, damage, coll, other);
                 }
             }
 
@@ -130,7 +130,7 @@ public class TakesDamage : MonoBehaviour
             {
                 foreach (GameEffect effect in deathEffects)
                 {
-                    effect.ActivateEffect(gameObject, damage, coll);
+                    effect.ActivateEffect(gameObject, damage, coll, other);
                 }
 
             }
@@ -146,6 +146,6 @@ public class TakesDamage : MonoBehaviour
             invulnerable = false;
         }
 
-        ApplyDamage(CurrentHP, EffectSource.Universal, null);
+        ApplyDamage(CurrentHP, EffectSource.Universal, null, null);
     }
 }

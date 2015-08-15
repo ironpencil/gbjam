@@ -3,12 +3,19 @@ using System.Collections;
 
 public class Weapon : MonoBehaviour {
 
+    public WeaponChargeHandler weaponChargeHandler;
+
     public EffectSource damageType;
 
-    public float damageValue = 10.0f;
+    public float baseDamage = 2.0f;
+    public float chargeBasedDamage = 8.0f;    
+    public float bonusChargedDamage = 10.0f;
+    public float actualDamage = 0.0f;
+
+    public float chargeRate = 0.2f;
 
     public float attackDuration = 0.25f;
-    public float attackDelay = 0.5f;
+    public float attackDelay = 0.5f;    
 
     private float lastAttackTime = 0.0f;
 
@@ -16,6 +23,21 @@ public class Weapon : MonoBehaviour {
     public Collider2D weaponCollider;
 
     private bool attackComplete = false;
+
+    [SerializeField]
+    private bool equipped = false;
+    public bool Equipped
+    {
+        get
+        {
+            return equipped;
+        }
+        set
+        {
+            equipped = value;            
+        }
+    }
+
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +54,7 @@ public class Weapon : MonoBehaviour {
             gameObject.SetActive(false);
         }
 	
-	}
+	}    
 
     public void OnTriggerEnter2D(Collider2D other)
     {        
@@ -40,7 +62,8 @@ public class Weapon : MonoBehaviour {
 
         if (takesDamage != null)
         {
-            takesDamage.ApplyDamage(damageValue, damageType, null);
+            Collider2D thisCollider = gameObject.GetComponent<Collider2D>();
+            takesDamage.ApplyDamage(actualDamage, damageType, null, thisCollider);
         }
     }
 
@@ -56,8 +79,20 @@ public class Weapon : MonoBehaviour {
     }
 
     public IEnumerator DoAttack()
-    {
+    {      
         attackComplete = false;
+
+        if (weaponChargeHandler.fullyCharged)
+        {
+            actualDamage = baseDamage + chargeBasedDamage + bonusChargedDamage;
+        }
+        else
+        {
+            float chargePercent = weaponChargeHandler.GetChargePercent();
+            actualDamage = baseDamage + (chargeBasedDamage * chargePercent);
+        }
+
+        weaponChargeHandler.Attack();
 
         doDealDamage = true;
         weaponCollider.enabled = true;

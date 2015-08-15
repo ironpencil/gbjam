@@ -4,10 +4,15 @@ using System.Collections;
 public class WeaponHandler : MonoBehaviour {
 
     public Weapon currentWeapon;
+    public WeaponChargeHandler chargeHandler;
 
 	// Use this for initialization
 	void Start () {
-	
+        //currentWeapon.weaponChargeHandler.weaponChargeBar = Globals.Instance.weaponChargeBar;
+        currentWeapon.Equipped = true;
+        chargeHandler.weaponChargeRate = currentWeapon.chargeRate;
+        chargeHandler.weaponChargeBar = Globals.Instance.weaponChargeBar;
+        currentWeapon.weaponChargeHandler = chargeHandler;
 	}
 	
 	// Update is called once per frame
