@@ -24,6 +24,7 @@ public class KillMobEffect : GameEffect {
         {
             movementToDisable.movementDirection = Vector2.zero;
             movementToDisable.enabled = false;
+            movementToDisable.disabled = true;
         }
 
         if (colliderToDisable != null)

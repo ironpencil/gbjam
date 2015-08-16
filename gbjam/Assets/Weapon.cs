@@ -24,6 +24,10 @@ public class Weapon : MonoBehaviour {
 
     private bool attackComplete = false;
 
+    public Animator attackerAnimator;
+
+    private const string ANIM_PARAM_ATTACKING = "attacking";
+
     [SerializeField]
     private bool equipped = false;
     public bool Equipped
@@ -92,6 +96,11 @@ public class Weapon : MonoBehaviour {
             actualDamage = baseDamage + (chargeBasedDamage * chargePercent);
         }
 
+        if (attackerAnimator != null)
+        {
+            attackerAnimator.SetBool(ANIM_PARAM_ATTACKING, true);
+        }
+
         weaponChargeHandler.Attack();
 
         doDealDamage = true;
@@ -102,6 +111,7 @@ public class Weapon : MonoBehaviour {
         doDealDamage = false;
         weaponCollider.enabled = false;
 
+        attackerAnimator.SetBool(ANIM_PARAM_ATTACKING, false);
         attackComplete = true;
     }
 }

@@ -29,7 +29,21 @@ public class TakesDamage : MonoBehaviour
     public virtual float CurrentHP
     {
         get { return privCurrentHP; }
-        set { privCurrentHP = Mathf.Min(value, maxHitPoints); }
+        set
+        {
+            privCurrentHP = Mathf.Min(value, maxHitPoints);
+            if (healthbar != null)
+            {
+                if (privCurrentHP < maxHitPoints)
+                {
+                    healthbar.SetHealthValue(privCurrentHP / maxHitPoints);
+                }
+                else
+                {
+                    healthbar.SetHealthValue(1.0f);
+                }
+            }
+        }
     }
 
     [SerializeField]
@@ -63,6 +77,8 @@ public class TakesDamage : MonoBehaviour
     private float lastRegenTime = 0.0f;
 
     public bool destroyOnDeath = false;
+
+    public HealthBar healthbar;
 
     // Use this for initialization
     public virtual void Start()
@@ -114,7 +130,7 @@ public class TakesDamage : MonoBehaviour
             damagedBy == damageType)
         {
             damageDealt = true;
-            privCurrentHP = privCurrentHP - damage;
+            CurrentHP = CurrentHP - damage;
 
             markedForDeath = !(privCurrentHP > 0.0f);
 
@@ -137,6 +153,16 @@ public class TakesDamage : MonoBehaviour
         }
 
         return damageDealt;
+    }
+
+    public virtual void Heal(float amount)
+    {
+        CurrentHP += amount;
+    }
+
+    public virtual void FullHeal()
+    {
+        CurrentHP = MaxHitPoints;
     }
 
     public virtual void Kill(bool forceVulnerable)

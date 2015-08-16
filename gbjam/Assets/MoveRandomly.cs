@@ -21,7 +21,7 @@ public class MoveRandomly : BaseMovement {
     public bool debugMovement = false;
     private bool doDebugVelocity = false;
 
-    private bool isMoving = false;
+    private bool isMoving = false;    
 
     private Rigidbody2D rb;
 
@@ -36,6 +36,8 @@ public class MoveRandomly : BaseMovement {
 	
 	// Update is called once per frame
 	void Update () {
+        if (disabled) { return; }
+
         if (isMoving && Time.time > moveEndTime)
         {
             //we are moving, and we should stop
@@ -52,6 +54,7 @@ public class MoveRandomly : BaseMovement {
 
     void FixedUpdate()
     {
+        if (disabled) { return; }
         Vector2 velocity = movementDirection * speed;
         if (rb.velocity != velocity)
         {

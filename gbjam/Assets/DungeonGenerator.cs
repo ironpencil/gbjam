@@ -117,12 +117,12 @@ public class DungeonGenerator : MonoBehaviour {
 
         DungeonRoom firstRoom = currentDungeonRooms.First();
 
-        firstRoom.stairsUp.gameObject.SetActive(true);
+        firstRoom.stairsDown.gameObject.SetActive(true);
 
 
         DungeonRoom finalRoom = currentDungeonRooms.Last();
 
-        finalRoom.stairsDown.gameObject.SetActive(true);
+        finalRoom.stairsUp.gameObject.SetActive(true);
 
         return new List<DungeonRoom>(currentDungeonRooms);
     }

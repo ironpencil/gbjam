@@ -151,6 +151,10 @@ public class DungeonManager : MonoBehaviour {
 
         dungeonGenerator.player = player.gameObject;
 
+        TakesDamage playerDamage = player.GetComponent<TakesDamage>();
+
+        playerDamage.healthbar = Globals.Instance.healthBar;
+
         SetUpDungeon();
 
     }

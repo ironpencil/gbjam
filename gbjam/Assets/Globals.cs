@@ -14,6 +14,7 @@ public class Globals : Singleton<Globals>
     public IntroPanel firstPanel;
 
     public WeaponChargeBar weaponChargeBar;
+    public HealthBar healthBar;
 
     public override void Start()
     {

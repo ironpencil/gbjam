@@ -32,7 +32,7 @@ public class StairTrigger : MonoBehaviour
         {
             Debug.Log("Triggered by player!");
             //do the transition
-            if (stairDirection == StairDirection.Down)
+            if (stairDirection == StairDirection.Up)
             {
                 dungeonManager.MoveToNextFloor();
             }
