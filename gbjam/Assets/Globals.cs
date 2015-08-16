@@ -16,6 +16,29 @@ public class Globals : Singleton<Globals>
     public WeaponChargeBar weaponChargeBar;
     public HealthBar healthBar;
 
+    private int currentGP = 0;
+    public int CurrentGP
+    {
+        get
+        {
+            return currentGP;
+        }
+        set
+        {
+            currentGP = value;
+
+            int displayedGP = Mathf.Min(currentGP, 99);
+
+            string currentGPString = displayedGP.ToString();
+            currentGPString = currentGPString.PadLeft(2, '0');
+
+            currentGPText.text = currentGPString;
+
+        }
+    }
+
+    public Text currentGPText;
+
     public override void Start()
     {
         base.Start();

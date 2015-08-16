@@ -155,6 +155,8 @@ public class DungeonManager : MonoBehaviour {
 
         playerDamage.healthbar = Globals.Instance.healthBar;
 
+        Globals.Instance.CurrentGP = 0;
+
         SetUpDungeon();
 
     }

@@ -17,6 +17,13 @@ public class MonsterSpawner : MonoBehaviour {
         }
 
         monster.transform.parent = enemyParent;
+
+        //LootHandler monsterLoot = monster.GetComponent<LootHandler>();
+
+        //if (monsterLoot != null)
+        //{
+        //    monsterLoot.DetermineLoot();
+        //}
         
 	}
 	
