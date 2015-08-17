@@ -9,6 +9,11 @@ public class DungeonRoom : MonoBehaviour {
     public GameObject westExit;
     public GameObject eastExit;
 
+    public GameObject northDoor;
+    public GameObject southDoor;
+    public GameObject westDoor;
+    public GameObject eastDoor;
+
     public HashSet<Direction> exits;
 
     public Vector2 roomCoordinates;

@@ -31,7 +31,8 @@ public class ExitHandler : MonoBehaviour {
 
         if (doneMoving)
         {
-            Time.timeScale = 1.0f;
+            Globals.Instance.Pause(false);
+            Globals.Instance.acceptPlayerGameInput = true;
             doneMoving = false;            
         }
 	}
@@ -43,7 +44,8 @@ public class ExitHandler : MonoBehaviour {
 
         if (newRoom == null) { return; }
 
-        Time.timeScale = 0.0f;
+        Globals.Instance.Pause(true);
+        Globals.Instance.acceptPlayerGameInput = false;
 
         cameraManager.transitionTime = roomTransitionTime;
 

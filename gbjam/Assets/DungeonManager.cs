@@ -21,6 +21,12 @@ public class DungeonManager : MonoBehaviour {
 
     public int currentFloor = 1;
 
+    public int bossFloor = 3;
+    public int finalFloor = 4;
+
+    public GameObject bossFloorPrefab;
+    public GameObject finalFloorPrefab;
+
 	// Use this for initialization
 	void Start () {
         //SetUpDungeon();
@@ -40,8 +46,55 @@ public class DungeonManager : MonoBehaviour {
     public void SetUpDungeon()
     {
         allRooms.Clear();
-                
-        allRooms = dungeonGenerator.BuildDungeon();
+
+        if (currentFloor == bossFloor)
+        {
+            dungeonGenerator.DestroyDungeon();
+
+            Vector2 roomPosition = new Vector2(dungeonGenerator.roomHorizontalOffset, dungeonGenerator.roomVerticalOffset);
+
+            GameObject bossFloorObject = (GameObject)GameObject.Instantiate(bossFloorPrefab, roomPosition, Quaternion.identity);
+
+            bossFloorObject.transform.parent = dungeonGenerator.roomParent;
+
+            List<DungeonRoom> bossDungeonRooms = bossFloorObject.GetComponentsInChildren<DungeonRoom>().ToList();
+
+            foreach (DungeonRoom room in bossDungeonRooms)
+            {
+                dungeonGenerator.PrepareStairs(room);
+                dungeonGenerator.PrepareExits(room, null);
+            }
+            allRooms = bossDungeonRooms;
+
+            dungeonGenerator.currentDungeonRooms = new List<DungeonRoom>(allRooms);
+        }
+        else if (currentFloor == finalFloor)
+        {
+            dungeonGenerator.DestroyDungeon();
+
+            Vector2 roomPosition = new Vector2(dungeonGenerator.roomHorizontalOffset, dungeonGenerator.roomVerticalOffset);
+
+            GameObject finalFloorObject = (GameObject)GameObject.Instantiate(finalFloorPrefab, roomPosition, Quaternion.identity);
+
+            finalFloorObject.transform.parent = dungeonGenerator.roomParent;
+
+            List<DungeonRoom> finalDungeonRooms = finalFloorObject.GetComponentsInChildren<DungeonRoom>().ToList();
+
+            foreach (DungeonRoom room in finalDungeonRooms)
+            {
+                dungeonGenerator.PrepareStairs(room);
+                dungeonGenerator.PrepareExits(room, null);
+            }
+            allRooms = finalDungeonRooms;
+
+            dungeonGenerator.currentDungeonRooms = new List<DungeonRoom>(allRooms);
+        }
+        else
+        {
+            allRooms = dungeonGenerator.BuildDungeon();
+        }
+
+        Globals.Instance.CurrentFloor = currentFloor;
 
         MoveToRoom(GetRoom(Vector2.zero), false); //don't spawn monsters in first room
 
@@ -115,11 +168,12 @@ public class DungeonManager : MonoBehaviour {
     {
         //disable player object
         Globals.Instance.Pause(true);
+        Globals.Instance.acceptPlayerGameInput = false;
         
         //TODO: do a screen transition
         yield return StartCoroutine(screenTransition.TransitionCoverScreen(1.0f));
 
-        player.gameObject.SetActive(false);
+        //player.gameObject.SetActive(false);
 
         currentFloor++;
 
@@ -130,6 +184,7 @@ public class DungeonManager : MonoBehaviour {
         yield return StartCoroutine(screenTransition.TransitionUncoverScreen(1.0f));
         
         Globals.Instance.Pause(false);
+        Globals.Instance.acceptPlayerGameInput = true;
 
         //TODO: do screen transition in
     }
@@ -155,7 +210,7 @@ public class DungeonManager : MonoBehaviour {
 
         playerDamage.healthbar = Globals.Instance.healthBar;
 
-        Globals.Instance.CurrentGP = 0;
+        Globals.Instance.CurrentGP = 0;        
 
         SetUpDungeon();
 

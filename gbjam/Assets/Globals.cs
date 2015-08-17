@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 public class Globals : Singleton<Globals>
 {    
-
     public bool paused = false;
     public bool acceptPlayerGameInput = true;
 
@@ -14,7 +13,7 @@ public class Globals : Singleton<Globals>
     public IntroPanel firstPanel;
 
     public WeaponChargeBar weaponChargeBar;
-    public HealthBar healthBar;
+    public HealthBar healthBar;    
 
     private int currentGP = 0;
     public int CurrentGP
@@ -37,7 +36,29 @@ public class Globals : Singleton<Globals>
         }
     }
 
+    private int currentFloor = 1;
+    public int CurrentFloor
+    {
+        get
+        {
+            return currentFloor;
+        }
+        set
+        {
+            currentFloor = value;
+
+            int displayedFloor = Mathf.Min(currentFloor, 99);
+
+            string currentFloorString = displayedFloor.ToString();
+            currentFloorString = currentFloorString.PadLeft(2, '0');
+
+            currentFloorText.text = currentFloorString;
+
+        }
+    }
+
     public Text currentGPText;
+    public Text currentFloorText;
 
     public override void Start()
     {
@@ -104,5 +125,5 @@ public class Globals : Singleton<Globals>
         yield return new WaitForSeconds(time);
 
         Application.Quit();
-    }
+    }    
 }

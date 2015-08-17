@@ -7,6 +7,8 @@ public class PlayerInput : MonoBehaviour {
     public FacingHandler facingHandler;
     public WeaponHandler weaponHandler;
 
+    public bool canMoveWhileAttacking = false;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,8 +16,12 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        HandleMovement();
-        HandleAttack();
+
+        if (Globals.Instance.acceptPlayerGameInput)
+        {
+            HandleMovement();
+            HandleAttack();
+        }
 	
 	}
 
@@ -29,12 +35,17 @@ public class PlayerInput : MonoBehaviour {
 
     void HandleMovement()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
+
+        float horizontal = 0.0f;
+        float vertical = 0.0f;
+
+        if (canMoveWhileAttacking || !weaponHandler.IsAttacking())
+        {
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
+        }
 
         float horizontalMovement = horizontal;
-
-        float vertical = Input.GetAxisRaw("Vertical");
-
         float verticalMovement = vertical;
 
         movementController.movementDirection = new Vector2(horizontalMovement, verticalMovement);

@@ -56,4 +56,9 @@ public class WeaponHandler : MonoBehaviour {
 
         currentWeapon.Attack();
     }
+
+    public bool IsAttacking()
+    {
+        return currentWeapon.isAttacking;
+    }
 }

@@ -21,7 +21,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public Transform roomParent;    
 
-    List<DungeonRoom> currentDungeonRooms = new List<DungeonRoom>();
+    public List<DungeonRoom> currentDungeonRooms = new List<DungeonRoom>();
 
     public DungeonManager dungeonManager;
     public CameraManager cameraManager;
@@ -60,21 +60,28 @@ public class DungeonGenerator : MonoBehaviour {
 
             currentDungeonRooms.Add(roomObject);
 
-            roomObject.stairsDown.gameObject.SetActive(false);
-            roomObject.stairsDown.dungeonManager = dungeonManager;
+            PrepareStairs(roomObject);
 
+            roomObject.stairsDown.gameObject.SetActive(false);
             roomObject.stairsUp.gameObject.SetActive(false);
-            roomObject.stairsUp.dungeonManager = dungeonManager;
+
+            //roomObject.stairsDown.gameObject.SetActive(false);
+            //roomObject.stairsDown.dungeonManager = dungeonManager;
+
+            //roomObject.stairsUp.gameObject.SetActive(false);
+            //roomObject.stairsUp.dungeonManager = dungeonManager;
 
             //build the exits
             ExitHandler exitHandler = (ExitHandler)GameObject.Instantiate(exitHandlerPrefab);
 
-            exitHandler.transform.parent = roomObject.transform;
-            exitHandler.transform.localPosition = Vector2.zero;
+            PrepareExits(roomObject, exitHandler);
 
-            exitHandler.dungeonManager = dungeonManager;
-            exitHandler.cameraManager = cameraManager;
-            exitHandler.player = player;
+            //exitHandler.transform.parent = roomObject.transform;
+            //exitHandler.transform.localPosition = Vector2.zero;
+
+            //exitHandler.dungeonManager = dungeonManager;
+            //exitHandler.cameraManager = cameraManager;
+            //exitHandler.player = player;
 
             foreach (Direction exitDirection in room.exits)
             {
@@ -125,6 +132,32 @@ public class DungeonGenerator : MonoBehaviour {
         finalRoom.stairsUp.gameObject.SetActive(true);
 
         return new List<DungeonRoom>(currentDungeonRooms);
+    }
+
+    public void PrepareStairs(DungeonRoom roomObject)
+    {
+        //roomObject.stairsDown.gameObject.SetActive(false);
+        roomObject.stairsDown.dungeonManager = dungeonManager;
+
+        //roomObject.stairsUp.gameObject.SetActive(false);
+        roomObject.stairsUp.dungeonManager = dungeonManager;
+    }
+
+    public void PrepareExits(DungeonRoom roomObject, ExitHandler exitHandler)
+    {
+        if (exitHandler == null)
+        {
+            exitHandler = roomObject.gameObject.GetComponentInChildren<ExitHandler>();
+
+            if (exitHandler == null) { return; }
+        }
+
+        exitHandler.transform.parent = roomObject.transform;
+        exitHandler.transform.localPosition = Vector2.zero;
+
+        exitHandler.dungeonManager = dungeonManager;
+        exitHandler.cameraManager = cameraManager;
+        exitHandler.player = player;
     }
 
     [ContextMenu("Display Dungeon")]

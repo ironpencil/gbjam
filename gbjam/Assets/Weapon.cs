@@ -22,6 +22,7 @@ public class Weapon : MonoBehaviour {
     private bool doDealDamage = false;
     public Collider2D weaponCollider;
 
+    public bool isAttacking = false;
     private bool attackComplete = false;
 
     public Animator attackerAnimator;
@@ -85,6 +86,7 @@ public class Weapon : MonoBehaviour {
     public IEnumerator DoAttack()
     {      
         attackComplete = false;
+        isAttacking = true;
 
         if (weaponChargeHandler.fullyCharged)
         {
@@ -113,5 +115,6 @@ public class Weapon : MonoBehaviour {
 
         attackerAnimator.SetBool(ANIM_PARAM_ATTACKING, false);
         attackComplete = true;
+        isAttacking = false;
     }
 }
