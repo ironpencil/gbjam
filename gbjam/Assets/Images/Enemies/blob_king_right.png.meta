@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4f6ef29721757e547b9601d6d57f0f35
-timeCreated: 1439756119
+timeCreated: 1439824196
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -64,7 +64,7 @@ TextureImporter:
     - name: blob_king_right_1
       rect:
         serializedVersion: 2
-        x: 68
+        x: 65
         y: 0
         width: 64
         height: 64

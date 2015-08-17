@@ -43,6 +43,7 @@ public class IntroPanel : MonoBehaviour
     {
         if (Globals.Instance.playIntro)
         {
+            gameObject.SetActive(true);
             StartCoroutine(DoDisplayPanel());
         }
         else
