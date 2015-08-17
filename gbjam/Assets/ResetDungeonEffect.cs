@@ -7,6 +7,8 @@ public class ResetDungeonEffect : GameEffect {
 
     public DungeonManager dungeonManager;
 
+    public bool resetWholeDungeon = false;
+
     public override void ActivateEffect(GameObject activator, float value, Collision2D coll, Collider2D other)
     {
         if (dungeonManager == null)
@@ -24,6 +26,13 @@ public class ResetDungeonEffect : GameEffect {
     {
         yield return new WaitForSeconds(resetDelay);
 
-        dungeonManager.ResetDungeon();
+        if (resetWholeDungeon)
+        {
+            dungeonManager.ResetDungeon();
+        }
+        else
+        {
+            dungeonManager.ResetFloor();
+        }
     }
 }

@@ -13,7 +13,9 @@ public class Globals : Singleton<Globals>
     public IntroPanel firstPanel;
 
     public WeaponChargeBar weaponChargeBar;
-    public HealthBar healthBar;    
+    public HealthBar healthBar;
+    public DungeonManager dungeonManager;
+    public ScreenTransition screenTransition;
 
     private int currentGP = 0;
     public int CurrentGP
@@ -71,11 +73,12 @@ public class Globals : Singleton<Globals>
             //play intro   
             acceptPlayerGameInput = false;
             //GUIManager.Instance.FadeScreen(1.0f, 1.0f, 0.0f);
+            firstPanel.introParent.SetActive(true);
             firstPanel.DisplayPanel();
         }
         else
         {
-            //StartCoroutine(DoNewLevelSetup(currentLevel));
+            StartGame();
         }
     }
 
@@ -83,10 +86,40 @@ public class Globals : Singleton<Globals>
     {
         if (playIntro)
         {
-            playIntro = false;
-            //acceptPlayerGameInput = true;
-            //StartCoroutine(DoNewLevelSetup(currentLevel));
+            playIntro = false;            
+            StartGame();
         }
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(DoStartGame());
+        dungeonManager.ResetDungeon();
+    }
+
+    private IEnumerator DoStartGame()
+    {
+        //disable player object
+        Globals.Instance.Pause(true);
+        Globals.Instance.acceptPlayerGameInput = false;
+
+        //TODO: do a screen transition
+        yield return StartCoroutine(screenTransition.TransitionCoverScreen(1.0f));
+
+        try
+        {
+            firstPanel.introParent.SetActive(false);
+        }
+        catch { }
+
+        yield return null;
+
+        yield return StartCoroutine(screenTransition.TransitionUncoverScreen(1.0f));
+
+        Globals.Instance.Pause(false);
+        Globals.Instance.acceptPlayerGameInput = true;
+
+        //TODO: do screen transition in
     }
 
     public void Pause(bool pause)

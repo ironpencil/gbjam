@@ -30,7 +30,7 @@ public class DungeonManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //SetUpDungeon();
-        ResetDungeon();
+        //ResetDungeon();
 	}
 	
 	// Update is called once per frame
@@ -193,6 +193,14 @@ public class DungeonManager : MonoBehaviour {
     {
         currentFloor = 1;
 
+        Globals.Instance.CurrentGP = 0;
+
+        ResetFloor();
+
+    }
+
+    public void ResetFloor()
+    {
         if (player != null && player.gameObject != null)
         {
             DestroyImmediate(player.gameObject);
@@ -208,11 +216,8 @@ public class DungeonManager : MonoBehaviour {
 
         TakesDamage playerDamage = player.GetComponent<TakesDamage>();
 
-        playerDamage.healthbar = Globals.Instance.healthBar;
-
-        Globals.Instance.CurrentGP = 0;        
+        playerDamage.healthbar = Globals.Instance.healthBar;        
 
         SetUpDungeon();
-
     }
 }

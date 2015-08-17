@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class IntroPanel : MonoBehaviour
 {
@@ -8,14 +9,35 @@ public class IntroPanel : MonoBehaviour
     public float displayTime = 0.5f;
     public float fadeOutTime = 0.25f;
 
+    public float minimumDisplayTime = 0.0f;
+
+    public bool automaticallyDismiss = true;
+
+    public bool minimumDisplayTimeMet = false;
+
     public CanvasGroup fader;
 
     public IntroPanel nextPanel;
     public GameObject introParent;
 
     public bool lastPanel = false;
+    public bool deactivateSelfOnDismiss = true;
+    public bool deactivateParentOnDismiss = false;
+
+    public List<string> dismissButtons;
 
     private bool doneDisplaying = false;
+
+    void Update()
+    {
+        foreach (string buttonName in dismissButtons)
+        {
+            if (Input.GetButtonDown(buttonName))
+            {
+                DoneDisplaying();
+            }
+        }
+    }
 
     public void DisplayPanel()
     {
@@ -32,17 +54,23 @@ public class IntroPanel : MonoBehaviour
 
     public void DoneDisplaying()
     {
-        if (!doneDisplaying)
+        if (!doneDisplaying && minimumDisplayTimeMet)
         {
             doneDisplaying = true;
 
-            this.gameObject.SetActive(false);
+            if (deactivateSelfOnDismiss)
+            {
+                this.gameObject.SetActive(false);
+            }
 
             if (lastPanel)
             {
                 //let globals know to start
                 Globals.Instance.IntroFinished();
-                introParent.SetActive(false);
+                if (deactivateParentOnDismiss)
+                {
+                    introParent.SetActive(false);
+                }
             }
             else
             {
@@ -81,26 +109,36 @@ public class IntroPanel : MonoBehaviour
             float deltaTime = Time.realtimeSinceStartup - currentTime;
 
             elapsedTime += deltaTime;
+
+            if (elapsedTime > minimumDisplayTime)
+            {
+                minimumDisplayTimeMet = true;
+            }
         }
 
-        elapsedTime = 0.0f;
+        minimumDisplayTimeMet = true;
 
-        while (elapsedTime < fadeOutTime)
+        if (automaticallyDismiss)
         {
-            float currentTime = Time.realtimeSinceStartup;
+            elapsedTime = 0.0f;
 
-            yield return null;
+            while (elapsedTime < fadeOutTime)
+            {
+                float currentTime = Time.realtimeSinceStartup;
 
-            float deltaTime = Time.realtimeSinceStartup - currentTime;
+                yield return null;
 
-            elapsedTime += deltaTime;
+                float deltaTime = Time.realtimeSinceStartup - currentTime;
 
-            float percentageComplete = elapsedTime / fadeInTime;
+                elapsedTime += deltaTime;
 
-            fader.alpha = 1 - percentageComplete;
+                float percentageComplete = elapsedTime / fadeInTime;
+
+                fader.alpha = 1 - percentageComplete;
+            }
+
+            DoneDisplaying();
         }
-
-        DoneDisplaying();
     }
 
 
