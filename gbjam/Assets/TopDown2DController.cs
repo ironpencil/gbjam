@@ -35,10 +35,21 @@ public class TopDown2DController : BaseMovement {
         //transform.position = position;        
 	}
 
+    public override void Move()
+    {
+        Vector2 velocity = movementDirection * speed;
+        rb.velocity = velocity;
+    }
+
     void FixedUpdate()
     {
-        Vector2 velocity = movementDirection * speed;        
-        rb.velocity = velocity;
+        if (moveDuringUpdate)
+        {
+            Move();
+        }
+        
+        //Vector2 velocity = movementDirection * speed;        
+        //rb.velocity = velocity;
 
         //rb.AddRelativeForce(velocity);
 

@@ -4,6 +4,7 @@ using System.Collections;
 public class Weapon : MonoBehaviour {
 
     public WeaponChargeHandler weaponChargeHandler;
+    public SoundEffectHandler attackSound;
 
     public EffectSource damageType;
 
@@ -101,6 +102,11 @@ public class Weapon : MonoBehaviour {
         if (attackerAnimator != null)
         {
             attackerAnimator.SetBool(ANIM_PARAM_ATTACKING, true);
+        }
+
+        if (attackSound != null)
+        {
+            attackSound.PlayEffect();
         }
 
         weaponChargeHandler.Attack();

@@ -17,6 +17,9 @@ public class Globals : Singleton<Globals>
     public DungeonManager dungeonManager;
     public ScreenTransition screenTransition;
 
+    public SoundEffectHandler gameStartSound;
+
+    [SerializeField]
     private int currentGP = 0;
     public int CurrentGP
     {
@@ -37,6 +40,8 @@ public class Globals : Singleton<Globals>
 
         }
     }
+
+    public int SlimesKilled = 0;
 
     private int currentFloor = 1;
     public int CurrentFloor
@@ -93,6 +98,10 @@ public class Globals : Singleton<Globals>
 
     public void StartGame()
     {
+        if (gameStartSound != null)
+        {
+            gameStartSound.PlayEffect();
+        }
         StartCoroutine(DoStartGame());
         dungeonManager.ResetDungeon();
     }
@@ -131,10 +140,12 @@ public class Globals : Singleton<Globals>
         if (paused)
         {
             Time.timeScale = 0.0f;
+            acceptPlayerGameInput = false;
         }
         else
         {
             Time.timeScale = 1.0f;
+            acceptPlayerGameInput = true;
         }
     }
 

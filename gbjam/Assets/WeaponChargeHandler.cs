@@ -12,6 +12,8 @@ public class WeaponChargeHandler : MonoBehaviour {
 
     public bool fullyCharged = false;
 
+    public SoundEffectHandler weaponChargedSound;
+
 	// Use this for initialization
 	void Start () {
         //if (weaponChargeBar == null)
@@ -31,9 +33,14 @@ public class WeaponChargeHandler : MonoBehaviour {
             weaponCharge = Mathf.Min(maxWeaponCharge, newWeaponCharge);
 
             weaponChargeBar.SetChargeValue(weaponCharge);
-        }
 
-        fullyCharged = !(weaponCharge < maxWeaponCharge);
+            fullyCharged = !(weaponCharge < maxWeaponCharge);
+
+            if (fullyCharged && weaponChargedSound != null)
+            {
+                weaponChargedSound.PlayEffect();
+            }
+        }        
     }
 
     public void Attack()

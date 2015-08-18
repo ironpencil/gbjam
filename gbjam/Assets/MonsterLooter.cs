@@ -5,6 +5,8 @@ public class MonsterLooter : MonoBehaviour
 {
     public LootHandler monsterLoot;
 
+    public SoundEffectHandler lootSound;
+
     // Use this for initialization
     void Start()
     {
@@ -31,6 +33,11 @@ public class MonsterLooter : MonoBehaviour
             monsterLoot.carrying.Add(lootable.gameObject);
             lootable.transform.parent = monsterLoot.transform;
             lootable.gameObject.SetActive(false);
+
+            if (lootSound != null)
+            {
+                lootSound.PlayEffect();
+            }
         }
     }
 }

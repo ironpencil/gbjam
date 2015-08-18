@@ -1,22 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class MonsterSpawner : MonoBehaviour {
+public class MonsterSpawner : MonoBehaviour {    
 
-    public GameObject monsterPrefab;
+    public List<GameObject> monsterPrefabs;
 
     public Transform enemyParent;
 
 	// Use this for initialization
 	void Start () {
-        GameObject monster = (GameObject) GameObject.Instantiate(monsterPrefab, transform.position, Quaternion.identity);
 
-        if (enemyParent == null)
+        if (monsterPrefabs != null && monsterPrefabs.Count > 0)
         {
-            enemyParent = transform.parent;
-        }
+            int randomIndex = Random.Range(0, monsterPrefabs.Count);
 
-        monster.transform.parent = enemyParent;
+            GameObject monster = (GameObject)GameObject.Instantiate(monsterPrefabs[randomIndex], transform.position, Quaternion.identity);
+
+            if (enemyParent == null)
+            {
+                enemyParent = transform.parent;
+            }
+
+            monster.transform.parent = enemyParent;
+
+        }
 
         //LootHandler monsterLoot = monster.GetComponent<LootHandler>();
 

@@ -36,21 +36,16 @@ public class MoveRandomly : BaseMovement {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (disabled) { return; }
 
-        if (isMoving && Time.time > moveEndTime)
+        if (moveDuringUpdate)
         {
-            //we are moving, and we should stop
-            StopMoving();
-        }
-        else if (!isMoving && Time.time > moveStartTime)
-        {
-            //we are not moving, and we should start
-            StartMoving();
+            Move();
         }
         
 	
-	}
+	}    
 
     void FixedUpdate()
     {
@@ -73,6 +68,22 @@ public class MoveRandomly : BaseMovement {
         //    rb.velocity = rb.velocity.normalized * maxSpeed;
         //}
 
+    }
+
+    public override void Move()
+    {
+        if (disabled) { return; }
+
+        if (isMoving && Time.time > moveEndTime)
+        {
+            //we are moving, and we should stop
+            StopMoving();
+        }
+        else if (!isMoving && Time.time > moveStartTime)
+        {
+            //we are not moving, and we should start
+            StartMoving();
+        }
     }
 
     private void StartMoving()

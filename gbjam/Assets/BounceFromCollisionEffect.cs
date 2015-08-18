@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BounceFromCollisionEffect : GameEffect
 {
     public BaseMovement movementToDisable;
+    public List<BaseMovement> movementsToDisable;
+
     public Rigidbody2D thisRigidbody;
     public Collider2D thisCollider;
 
@@ -18,6 +21,11 @@ public class BounceFromCollisionEffect : GameEffect
         if (coll == null && other == null) { return; }
 
         movementToDisable.enabled = false;
+
+        foreach (BaseMovement movement in movementsToDisable)
+        {
+            movement.enabled = false;
+        }
 
         Vector2 direction = Vector2.zero;
         Vector2 bounceFromPoint = Vector2.zero;
@@ -57,6 +65,11 @@ public class BounceFromCollisionEffect : GameEffect
         yield return new WaitForSeconds(movementDisabledTime);
 
         movementToDisable.enabled = true;
+
+        foreach (BaseMovement movement in movementsToDisable)
+        {
+            movement.enabled = true;
+        }
     }
 
 }

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class KillMobEffect : GameEffect {
 
     public Animator deathAnimator;
     public BaseMovement movementToDisable;
+    public List<BaseMovement> movementsToDisable;
     public Collider2D colliderToDisable;
     public Rigidbody2D rigidbodyToReset;
 
@@ -22,9 +24,14 @@ public class KillMobEffect : GameEffect {
 
         if (movementToDisable != null)
         {
-            movementToDisable.movementDirection = Vector2.zero;
-            movementToDisable.enabled = false;
-            movementToDisable.disabled = true;
+            movementsToDisable.Add(movementToDisable);
+        }
+
+        foreach (BaseMovement movement in movementsToDisable)
+        {
+            movement.movementDirection = Vector2.zero;
+            movement.enabled = false;
+            movement.disabled = true;
         }
 
         if (colliderToDisable != null)

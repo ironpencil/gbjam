@@ -71,6 +71,7 @@ public class TakesDamage : MonoBehaviour
 
     public int pointValue = 100;
     public int killValue = 1;
+    public bool scored = false;
 
     public float HPRegenAmount = 0.0f;
     public float HPRegenDelay = 1.0f;
@@ -97,6 +98,14 @@ public class TakesDamage : MonoBehaviour
         {
 
             //ScoreManager.Instance.AddKilledEnemyPoints(pointValue, killValue);
+
+            if (!scored)
+            {
+                Globals.Instance.SlimesKilled += killValue;
+                scored = true;
+            }
+                
+
 
             if (destroyOnDeath)
             {

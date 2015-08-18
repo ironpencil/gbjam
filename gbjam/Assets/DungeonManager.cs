@@ -27,6 +27,8 @@ public class DungeonManager : MonoBehaviour {
     public GameObject bossFloorPrefab;
     public GameObject finalFloorPrefab;
 
+    public SoundEffectHandler nextFloorSound;
+
 	// Use this for initialization
 	void Start () {
         //SetUpDungeon();
@@ -169,7 +171,12 @@ public class DungeonManager : MonoBehaviour {
         //disable player object
         Globals.Instance.Pause(true);
         Globals.Instance.acceptPlayerGameInput = false;
-        
+
+        if (nextFloorSound != null)
+        {
+            nextFloorSound.PlayEffect();
+        }
+
         //TODO: do a screen transition
         yield return StartCoroutine(screenTransition.TransitionCoverScreen(1.0f));
 
@@ -179,7 +186,7 @@ public class DungeonManager : MonoBehaviour {
 
         SetUpDungeon();
 
-        yield return null;
+        yield return null;        
 
         yield return StartCoroutine(screenTransition.TransitionUncoverScreen(1.0f));
         

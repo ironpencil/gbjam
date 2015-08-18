@@ -4,14 +4,20 @@ using System.Collections.Generic;
 
 public class RoomDoorsEffect : GameEffect {
 
+
     public List<GameObject> openDoors;
     public List<GameObject> closeDoors;
 
     public bool openCurrentRoomDoors = false;
     public bool closeCurrentRoomDoors = false;
 
+    public SoundEffectHandler doorSound;
+
+    private bool doorChanged = false;
+
     public override void ActivateEffect(GameObject activator, float value, Collision2D coll, Collider2D other)
     {
+        doorChanged = false;
         if (openCurrentRoomDoors || closeCurrentRoomDoors)
         {
             List<GameObject> roomDoors = GetCurrentRoomDoors();
@@ -36,16 +42,23 @@ public class RoomDoorsEffect : GameEffect {
         {
             CloseDoor(door);
         }
+
+        if (doorChanged && doorSound != null)
+        {
+            doorSound.PlayEffect();
+        }
     }
 
     public void OpenDoor(GameObject door)
     {
         door.SetActive(false);
+        doorChanged = true;
     }
 
     public void CloseDoor(GameObject door)
     {
         door.SetActive(true);
+        doorChanged = true;
     }
 
     public List<GameObject> GetCurrentRoomDoors()
