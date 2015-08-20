@@ -6,7 +6,7 @@ public class AudioManager : Singleton<AudioManager>
 {
     public AudioSource sfxSource;
     public AudioSource sharedSFXSource;
-    public AudioSource musicSource;
+    public AudioSource musicSource;    
 
     public float volumeIncrement = 0.1f;
 
@@ -42,5 +42,33 @@ public class AudioManager : Singleton<AudioManager>
     {
         AudioListener.volume = Mathf.Clamp(volume, minVolume, maxVolume);
     }
+
+    public void StartMusic()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
+
+        musicSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
+    }
+
+    public void PauseMusic(bool pause)
+    {
+        if (pause)
+        {
+            musicSource.Pause();
+        }
+        else
+        {
+            musicSource.UnPause();
+        }
+    }
+    
     
 }

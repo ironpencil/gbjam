@@ -122,5 +122,7 @@ public class Weapon : MonoBehaviour {
         attackerAnimator.SetBool(ANIM_PARAM_ATTACKING, false);
         attackComplete = true;
         isAttacking = false;
+
+        gameObject.SetActive(false);
     }
 }

@@ -13,6 +13,8 @@ public class FacingHandler : MonoBehaviour {
     public Vector2 facing = Vector2.zero;
 
     public bool simpleFacing = true;
+
+    public bool doFacingInUpdate = true;
 	// Use this for initialization
 	void Start () {
 	
@@ -21,6 +23,21 @@ public class FacingHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if (doFacingInUpdate)
+        {
+            UpdateFacing();
+        }
+
+        
+        
+
+        
+        
+	
+	}
+
+    public void UpdateFacing()
+    {
         float moveX = movementController.movementDirection.x;
         float moveY = movementController.movementDirection.y;
         bool walking = false;
@@ -72,12 +89,5 @@ public class FacingHandler : MonoBehaviour {
         animator.SetFloat(ANIM_PARAM_FACING_X, facing.x);
         animator.SetFloat(ANIM_PARAM_FACING_Y, facing.y);
         animator.SetBool(ANIM_PARAM_WALKING, walking);
-
-        
-        
-
-        
-        
-	
-	}
+    }
 }

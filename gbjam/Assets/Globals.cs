@@ -125,6 +125,8 @@ public class Globals : Singleton<Globals>
 
         yield return StartCoroutine(screenTransition.TransitionUncoverScreen(1.0f));
 
+        //AudioManager.Instance.StartMusic();
+
         Globals.Instance.Pause(false);
         Globals.Instance.acceptPlayerGameInput = true;
 

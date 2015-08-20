@@ -41,13 +41,33 @@ public class PlayerInput : MonoBehaviour {
 
         if (canMoveWhileAttacking || !weaponHandler.IsAttacking())
         {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            vertical = Input.GetAxisRaw("Vertical");
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
         }
 
-        float horizontalMovement = horizontal;
-        float verticalMovement = vertical;
+        float horizontalMovement = 0.0f;
+        float verticalMovement = 0.0f;
+
+        if (horizontal > 0.0f)
+        {
+            horizontalMovement = 1.0f;
+        }
+        else if (horizontal < 0.0f)
+        {
+            horizontalMovement = -1.0f;
+        }
+
+        if (vertical > 0.0f)
+        {
+            verticalMovement = 1.0f;
+        }
+        else if (vertical < 0.0f)
+        {
+            verticalMovement = -1.0f;
+        }
 
         movementController.movementDirection = new Vector2(horizontalMovement, verticalMovement);
+
+        facingHandler.UpdateFacing();
     }
 }
